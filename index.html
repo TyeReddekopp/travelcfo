@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TravelCFO — What will your trip actually cost?</title>
+  <meta name="description" content="TravelCFO tells you the full financial picture of any trip — when to go, what it will truly cost, and how much you can cover with points." />
+
+  <!-- Open Graph (for social sharing) -->
+  <meta property="og:title" content="TravelCFO — What will your trip actually cost?" />
+  <meta property="og:description" content="The app that shows you the true cost of any trip before you book — and how much your points can cover." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #111827;
+      background: #fff;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: #534AB7; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Colours ── */
+    :root {
+      --purple: #534AB7;
+      --purple-dark: #3D368A;
+      --purple-light: #EEF0FF;
+      --gold: #F59E0B;
+      --text: #111827;
+      --subtext: #6B7280;
+      --border: #E5E7EB;
+      --bg-alt: #F9FAFB;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 80px 0; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 960px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo { font-size: 20px; font-weight: 800; color: var(--purple); letter-spacing: -0.5px; }
+    .nav-cta {
+      background: var(--purple); color: #fff;
+      padding: 9px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 700;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--purple-dark); text-decoration: none; }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(135deg, #3D368A 0%, #534AB7 50%, #6C64D4 100%);
+      padding: 100px 0 80px;
+      text-align: center;
+      color: #fff;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.9);
+      font-size: 13px; font-weight: 600;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 28px; letter-spacing: 0.3px;
+    }
+    .hero-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+    .hero-title span { color: #FDE68A; }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: rgba(255,255,255,0.82);
+      max-width: 580px;
+      margin: 0 auto 40px;
+      line-height: 1.55;
+    }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #fff; color: var(--purple);
+      padding: 14px 28px; border-radius: 14px;
+      font-size: 16px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.25); text-decoration: none; }
+    .btn-secondary {
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: #fff;
+      padding: 14px 28px; border-radius: 14px;
+      font-size: 16px; font-weight: 700;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.25); text-decoration: none; }
+    .hero-note { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 16px; }
+
+    /* Hero mockup */
+    .hero-mockup {
+      margin-top: 60px;
+      display: flex; justify-content: center; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .mockup-card {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 20px 24px;
+      text-align: left;
+      min-width: 200px; max-width: 220px;
+      backdrop-filter: blur(4px);
+    }
+    .mockup-card .icon { font-size: 28px; margin-bottom: 10px; }
+    .mockup-card .label { font-size: 12px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .mockup-card .value { font-size: 22px; font-weight: 800; color: #fff; }
+    .mockup-card .sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .mockup-card.green .value { color: #6EE7B7; }
+    .mockup-card.gold .value { color: #FDE68A; }
+
+    /* ── Problem ── */
+    #problem { background: var(--bg-alt); text-align: center; }
+    .problem-text {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 700;
+      max-width: 640px;
+      margin: 0 auto 16px;
+      line-height: 1.4;
+    }
+    .problem-sub { color: var(--subtext); max-width: 540px; margin: 0 auto; font-size: 17px; }
+
+    /* ── Section headers ── */
+    .section-tag {
+      color: var(--purple); font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800; line-height: 1.2;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+    .section-sub { color: var(--subtext); font-size: 17px; max-width: 520px; margin-bottom: 52px; }
+
+    /* ── Feature cards ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .feature-card:hover { box-shadow: 0 8px 32px rgba(83,74,183,0.1); transform: translateY(-3px); }
+    .feature-icon {
+      width: 52px; height: 52px;
+      background: var(--purple-light);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+    .feature-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .feature-desc { color: var(--subtext); font-size: 15px; line-height: 1.55; }
+
+    /* ── How it works ── */
+    #how { background: var(--bg-alt); }
+    .steps { display: flex; flex-direction: column; gap: 0; max-width: 640px; }
+    .step {
+      display: flex; gap: 24px; padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      width: 44px; height: 44px; min-width: 44px;
+      background: var(--purple); color: #fff;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 800;
+    }
+    .step-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .step-desc { color: var(--subtext); font-size: 15px; line-height: 1.55; }
+
+    /* ── Stats bar ── */
+    .stats-bar {
+      background: var(--purple);
+      padding: 48px 0;
+      text-align: center;
+    }
+    .stats-grid {
+      display: flex; justify-content: center;
+      gap: 48px; flex-wrap: wrap;
+    }
+    .stat { color: #fff; }
+    .stat-num { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+    .stat-label { font-size: 14px; color: rgba(255,255,255,0.7); margin-top: 4px; }
+
+    /* ── Why different ── */
+    .diff-list { list-style: none; display: flex; flex-direction: column; gap: 20px; max-width: 640px; }
+    .diff-item { display: flex; gap: 16px; align-items: flex-start; }
+    .diff-check {
+      width: 28px; height: 28px; min-width: 28px;
+      background: var(--purple-light);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--purple); font-weight: 800; font-size: 15px;
+    }
+    .diff-title { font-weight: 700; margin-bottom: 4px; }
+    .diff-desc { color: var(--subtext); font-size: 15px; }
+
+    /* ── FAQ ── */
+    #faq { background: var(--bg-alt); }
+    .faq-list { max-width: 680px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-q {
+      width: 100%; background: none; border: none;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 0; cursor: pointer;
+      font-size: 16px; font-weight: 600; color: var(--text);
+      text-align: left; gap: 12px;
+    }
+    .faq-q:hover { color: var(--purple); }
+    .faq-icon { font-size: 20px; font-weight: 300; color: var(--subtext); flex-shrink: 0; transition: transform 0.2s; }
+    .faq-a { display: none; padding: 0 0 18px; color: var(--subtext); font-size: 15px; line-height: 1.6; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ── Email capture ── */
+    #signup {
+      background: linear-gradient(135deg, #3D368A, #534AB7);
+      text-align: center; color: #fff;
+    }
+    .signup-title { font-size: clamp(26px, 4vw, 38px); font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
+    .signup-sub { color: rgba(255,255,255,0.75); font-size: 17px; max-width: 480px; margin: 0 auto 36px; }
+    .email-form { display: flex; gap: 10px; max-width: 440px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+    .email-input {
+      flex: 1; min-width: 240px;
+      padding: 14px 18px; border-radius: 12px;
+      border: none; font-size: 15px;
+      outline: none;
+    }
+    .email-input:focus { box-shadow: 0 0 0 3px rgba(255,255,255,0.3); }
+    .email-btn {
+      background: var(--gold); color: #111827;
+      padding: 14px 22px; border-radius: 12px;
+      font-size: 15px; font-weight: 800;
+      border: none; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .email-btn:hover { opacity: 0.9; }
+    .signup-note { color: rgba(255,255,255,0.5); font-size: 13px; margin-top: 14px; }
+    .success-msg { display: none; color: #6EE7B7; font-weight: 600; margin-top: 12px; font-size: 15px; }
+
+    /* ── Footer ── */
+    footer {
+      background: #111827; color: rgba(255,255,255,0.55);
+      padding: 40px 0; text-align: center; font-size: 14px;
+    }
+    .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+    .footer-links a { color: rgba(255,255,255,0.55); }
+    .footer-links a:hover { color: #fff; text-decoration: none; }
+    .footer-copy { color: rgba(255,255,255,0.35); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      section { padding: 60px 0; }
+      .stats-grid { gap: 32px; }
+      .mockup-card { min-width: 160px; }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">TravelCFO</span>
+    <a href="#signup" class="nav-cta">Get Early Access</a>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-tag">✈️ Coming soon to iOS</div>
+    <h1 class="hero-title">What will your trip<br><span>actually cost?</span></h1>
+    <p class="hero-sub">TravelCFO is the app that tells you the full financial picture of any trip — when to go, what it will truly cost, and how much you can cover with points.</p>
+    <div class="hero-buttons">
+      <a href="#signup" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on iOS
+      </a>
+      <a href="#features" class="btn-secondary">Learn more ↓</a>
+    </div>
+    <p class="hero-note">Free to download · No account required</p>
+
+    <!-- Mock data cards -->
+    <div class="hero-mockup">
+      <div class="mockup-card">
+        <div class="icon">📊</div>
+        <div class="label">True trip cost</div>
+        <div class="value green">C$4,280</div>
+        <div class="sub">Barcelona · Nov · 2 people</div>
+      </div>
+      <div class="mockup-card">
+        <div class="icon">💳</div>
+        <div class="label">Points cover</div>
+        <div class="value gold">C$1,140</div>
+        <div class="sub">Aeroplan + Amex MR</div>
+      </div>
+      <div class="mockup-card">
+        <div class="icon">💰</div>
+        <div class="label">Net cash cost</div>
+        <div class="value">C$3,140</div>
+        <div class="sub">After your points</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Problem ── -->
+<section id="problem">
+  <div class="container" style="text-align:center">
+    <p class="problem-text">Most travel apps help you book.<br>None of them help you understand what you're actually spending.</p>
+    <p class="problem-sub">You're left juggling 5 different apps, no clear picture of the total cost, and no idea if your points are working for you.</p>
+  </div>
+</section>
+
+<!-- ── Features ── -->
+<section id="features">
+  <div class="container">
+    <div class="section-tag">What TravelCFO does</div>
+    <h2 class="section-title">The full financial picture,<br>before you book anything</h2>
+    <p class="section-sub">Three tools that work together to help you spend less and travel smarter.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Find the perfect time to go</div>
+        <div class="feature-desc">See crowd levels, average prices, and weather quality for every month of the year. Our Go Score instantly shows the quiet, affordable window — and how much you save versus peak season.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Know the true cost before you book</div>
+        <div class="feature-desc">Flights, hotels, food, transport, activities, visa fees, and travel insurance — all modelled in one place for your party size, trip length, and travel style. Adjusted for your city.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <div class="feature-title">Make your points work harder</div>
+        <div class="feature-desc">Enter your Aeroplan, Chase, Amex, and other balances. We convert them to real dollar values and show you the one number no other app shows — your actual out-of-pocket cost after points.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚖️</div>
+        <div class="feature-title">Compare destinations side by side</div>
+        <div class="feature-desc">Should you go to Bali or Thailand? Japan or South Korea? Compare up to 3 destinations with a full cost breakdown and Go Score for any month you choose.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">AI-powered cost estimates</div>
+        <div class="feature-desc">Powered by Google Gemini, our AI gives you sharper estimates for your specific departure city and travel style — including tips on where to save and the best areas to stay.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">Book everything in one place</div>
+        <div class="feature-desc">Find and book flights, hotels, activities, transport, insurance, and visas — all from inside the app, with options tailored to your travel style.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ── -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-num">281</div>
+      <div class="stat-label">Destinations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Departure cities</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8</div>
+      <div class="stat-label">Points programs</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">35</div>
+      <div class="stat-label">Currencies</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── How it works ── -->
+<section id="how">
+  <div class="container">
+    <div class="section-tag">How it works</div>
+    <h2 class="section-title">Three steps to a smarter trip</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">Search any destination</div>
+          <div class="step-desc">Choose from 281 destinations worldwide. Instantly see a month-by-month Go Score showing crowd levels, average prices, and weather — and exactly how much you save by going at the right time.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">See the full cost breakdown</div>
+          <div class="step-desc">Flights from your city, hotels, food, transport, activities, visa fees, and insurance are all calculated for your party size, trip length, and travel style. All in your local currency.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">Apply your points and see your real cost</div>
+          <div class="step-desc">Enter your loyalty balances and instantly see how much cash you actually need. Then tap straight through to book flights, hotels, activities, and insurance — all from inside the app.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Why different ── -->
+<section id="why">
+  <div class="container">
+    <div class="section-tag">Why TravelCFO is different</div>
+    <h2 class="section-title">Built for how financially-minded<br>travellers actually think</h2>
+    <ul class="diff-list">
+      <li class="diff-item">
+        <div class="diff-check">✓</div>
+        <div>
+          <div class="diff-title">It's a planning tool, not a booking tool</div>
+          <div class="diff-desc">TravelCFO helps you decide before you book, not after. No other app models the complete cost of a trip before you've committed to anything.</div>
+        </div>
+      </li>
+      <li class="diff-item">
+        <div class="diff-check">✓</div>
+        <div>
+          <div class="diff-title">Points are treated as real currency</div>
+          <div class="diff-desc">Most travel apps ignore your loyalty balances entirely. TravelCFO converts them to dollar values and subtracts them from your total — giving you the number that actually matters.</div>
+        </div>
+      </li>
+      <li class="diff-item">
+        <div class="diff-check">✓</div>
+        <div>
+          <div class="diff-title">Timing is shown as a financial decision</div>
+          <div class="diff-desc">Going to Barcelona in November instead of July saves over $1,200. TravelCFO makes that visible at a glance so you can act on it.</div>
+        </div>
+      </li>
+      <li class="diff-item">
+        <div class="diff-check">✓</div>
+        <div>
+          <div class="diff-title">Prices adjust for where you live</div>
+          <div class="diff-desc">A flight from Edmonton costs very differently than one from London or Sydney. TravelCFO estimates costs from your city, not a generic "North American" baseline.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section id="faq">
+  <div class="container">
+    <div class="section-tag">FAQ</div>
+    <h2 class="section-title">Common questions</h2>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is TravelCFO free?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes — TravelCFO is completely free to download and use. All features are included at no cost.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Which devices are supported?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">TravelCFO is available on iPhone (iOS). Android is planned for a future update.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How accurate are the cost estimates?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Estimates are based on real seasonal averages for flights and hotels, combined with typical daily costs for food, transport, and activities. They are planning estimates — actual prices will vary. AI-powered estimates using Google Gemini provide more tailored breakdowns for your specific trip.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need to create an account?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">No account required. Your trip preferences, points balances, and saved trips are stored locally on your device. No sign-up, no password.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Which points programs are supported?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">TravelCFO supports Aeroplan, Chase Ultimate Rewards, American Express Membership Rewards, Capital One Venture Miles, TD Rewards, Scotia Rewards, Marriott Bonvoy, and Hilton Honors. More programs are planned.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Does TravelCFO book travel for me?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">TravelCFO helps you plan and understand the cost of your trip. When you're ready to book, it connects you directly to the best booking sites for flights, hotels, activities, and insurance — with recommendations tailored to your travel style.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I contact support?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Email us at <a href="mailto:tareddekopp@shaw.ca">tareddekopp@shaw.ca</a>. We typically respond within 24 hours.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Email signup ── -->
+<section id="signup">
+  <div class="container">
+    <h2 class="signup-title">Be the first to know when we launch</h2>
+    <p class="signup-sub">Get early access, launch-week updates, and travel tips straight to your inbox. No spam — ever.</p>
+
+    <!--
+      SETUP: Sign up at https://formspree.io (free), create a form,
+      and replace "YOUR_FORM_ID" below with your Formspree form ID.
+    -->
+    <form class="email-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleSubmit(event)">
+      <input class="email-input" type="email" name="email" placeholder="Enter your email address" required />
+      <button class="email-btn" type="submit">Notify Me</button>
+    </form>
+    <p class="signup-note">By signing up you agree to receive occasional emails from TravelCFO. Unsubscribe anytime.</p>
+    <p class="success-msg" id="success-msg">✓ You're on the list! We'll be in touch.</p>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="mailto:tareddekopp@shaw.ca">Contact</a>
+    </div>
+    <p class="footer-copy">© 2026 TravelCFO. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function handleSubmit(e) {
+    const form = e.target;
+    const action = form.getAttribute('action');
+    if (action.includes('YOUR_FORM_ID')) {
+      e.preventDefault();
+      document.getElementById('success-msg').style.display = 'block';
+      form.reset();
+      return;
+    }
+    e.preventDefault();
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(r => {
+      if (r.ok) {
+        document.getElementById('success-msg').style.display = 'block';
+        form.reset();
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
