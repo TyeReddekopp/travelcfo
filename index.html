@@ -151,14 +151,55 @@
       color: #6b7891;
     }
 
+    .support-bar {
+      background: #14213d;
+      color: #f5efe3;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .support-bar p {
+      color: rgba(245,239,227,0.85);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .support-bar strong { color: #f5efe3; }
+
+    .support-btn {
+      display: inline-block;
+      background: #f5efe3;
+      color: #14213d;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.5rem 1.1rem;
+      border-radius: 20px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .support-btn:hover { background: #fff; }
+
     @media (max-width: 600px) {
       .container { padding: 1.5rem 1.25rem; }
       h1 { font-size: 1.5rem; }
+      .support-bar { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
 <body>
 <div class="container">
+
+  <div class="support-bar">
+    <p><strong>Need help with TravelCFO?</strong><br>We're happy to help with your account, subscriptions, or anything else.</p>
+    <a class="support-btn" href="mailto:support@travelcfo.com">Email Support</a>
+  </div>
 
   <header>
     <div class="app-name">TravelCFO</div>
